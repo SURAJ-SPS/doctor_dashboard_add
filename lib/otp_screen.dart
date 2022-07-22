@@ -1,3 +1,4 @@
+import 'package:dpm_application/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -37,6 +38,9 @@ class _OTPScreenState extends State<OTPScreen> {
           SnackBar(content: Text('Invalid OTP code. Please check again.'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     }
   }
 

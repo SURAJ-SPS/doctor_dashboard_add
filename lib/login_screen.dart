@@ -17,22 +17,35 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController phoneNumberController = TextEditingController();
 
   Future<void> submit() async {
-    final phoneNumber = phoneNumberController.text;
+    final phoneNumber = countryCode + phoneNumberController.text;
     debugPrint('OTP is $phoneNumber');
-    if (phoneNumber.length != 10) {
-      const snackBar =
-          SnackBar(content: Text('Invalid Phone Number. Please check again.'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;
-    } else if (phoneNumber.length == 10) {
+    if (phoneNumber.length > 10) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => OTPScreen(phoneNumberController: phoneNumber),
         ),
       );
+    } else {
+      const snackBar =
+          SnackBar(content: Text('Invalid Phone Number. Please check again.'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
     }
   }
+
+  String countryCode = '+91';
+  List<String> countryCodeList = [
+    '+91',
+    '+880',
+    '+855',
+    '+233',
+    "+60",
+    "+92",
+    "+63",
+    "+94",
+    "+255",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -63,16 +76,38 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    const Expanded(
+                    Expanded(
                       flex: 2,
                       child: Center(
-                        child: Text(
-                          '+92',
-                          style: TextStyle(
-                              fontFamily: 'RobotoCondensed',
+                        child: DropdownButton<String>(
+                          alignment: Alignment.centerLeft,
+                          value: countryCode,
+                          icon: const Padding(
+                            padding: EdgeInsets.only(top: 20, right: 1),
+                            child: Icon(
+                              Icons.arrow_drop_down,
                               color: kGreen,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          elevation: 0,
+                          style: const TextStyle(color: kGreen),
+                          underline: Container(
+                            height: 0,
+                            color: Colors.transparent,
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              countryCode = newValue!;
+                            });
+                          },
+                          items: countryCodeList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              alignment: Alignment.bottomCenter,
+                              value: value,
+                              child: Text(value, style: kDropDownTextStyle),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ),

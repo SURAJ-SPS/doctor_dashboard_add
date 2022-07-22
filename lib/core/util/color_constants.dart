@@ -12,7 +12,9 @@ const kPrimaryColorTint20 = Color(0xFFcee0f4);
 const kPrimaryColorTint50 = Color(0xFF83b0e3);
 const kPrimaryColorTint70 = Color(0xFF5291d8);
 const kPrimaryColorTint80 = Color(0xFF325ca8);
-const kPrimaryColorTint90 = Color(0xFF0862c8);
+const kPrimaryColorTint90 = Color(0xff4290e7);
+const kPrimaryColorTint100 = Color(0xff6aa6e7);
+const kPrimaryColorTint110 = Color(0xffa4c7e8);
 
 /* Grey Color Tints */
 const kGreyColorTint90 = Color(0xFF1c383e);

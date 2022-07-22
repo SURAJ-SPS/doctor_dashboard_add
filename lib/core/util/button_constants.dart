@@ -16,10 +16,31 @@ const kFlatButtonGreenText = TextStyle(
   fontFamily: 'RobotoCondensed',
   package: 'common_library_package',
 );
-
+const kElevatedButtonGreenButton = TextStyle(
+  color: kGreen,
+  fontSize: 20.0,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'RobotoCondensed',
+  package: 'common_library_package',
+);
 const kButtonPrimaryColorCondensedText = TextStyle(
   color: kPrimaryColour,
   fontSize: 12.0,
+  fontFamily: 'RobotoCondensed',
+  fontWeight: FontWeight.bold,
+  package: 'common_library_package',
+);
+
+const kButtonPrimarycolorCondensedText = TextStyle(
+  color: kPrimaryColour,
+  fontSize: 12.0,
+  fontFamily: 'RobotoCondensed',
+  fontWeight: FontWeight.bold,
+  package: 'common_library_package',
+);
+const kAppBarTitleText = TextStyle(
+  color: kPrimaryColour,
+  fontSize: 20.0,
   fontFamily: 'RobotoCondensed',
   fontWeight: FontWeight.bold,
   package: 'common_library_package',
@@ -58,6 +79,7 @@ const kSubtitleCondensedText = TextStyle(
 );
 
 const kSubtitleTextStyle = TextStyle(color: Colors.white, fontSize: 14.0);
+const kDropDownTextStyle = TextStyle(color: kGreen, fontSize: 20.0);
 
 const kLoginTextFieldStyle = TextStyle(
   fontFamily: 'RobotoCondensed',

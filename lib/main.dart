@@ -1,3 +1,4 @@
+import 'package:dpm_application/home_screen.dart';
 import 'package:dpm_application/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeUtil.themeData,
       initialRoute: LoginScreen.id,
-      home: const LoginScreen(),
+      home: const HomePage(),
     );
   }
 }
