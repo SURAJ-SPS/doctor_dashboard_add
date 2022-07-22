@@ -1,7 +1,6 @@
 import 'package:dpm_application/core/util/color_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../refrence.dart';
 import 'features/presentation/widgets/doctor_info_container.dart';
 import 'features/presentation/widgets/text_field_widget.dart';
@@ -14,6 +13,9 @@ class EditDoctorProfile extends StatefulWidget {
 }
 
 class _EditDoctorProfileState extends State<EditDoctorProfile> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? image;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -28,8 +30,16 @@ class _EditDoctorProfileState extends State<EditDoctorProfile> {
               Column(
                 children: [
                   Container(
+                    alignment: Alignment.centerLeft,
                     color: kPrimaryColour,
                     height: size.height * .14,
+                    child: IconButton(
+                        padding: const EdgeInsets.all(0),
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: kAccentColor,
+                        )),
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 20),
@@ -43,9 +53,9 @@ class _EditDoctorProfileState extends State<EditDoctorProfile> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Name",
-                          style: TextStyle(
+                        Text(
+                          "${fNameController.text} ${lNameController.text}",
+                          style: const TextStyle(
                             color: kPrimaryColorTint80,
                             fontSize: 16.0,
                             fontFamily: 'RobotoCondensed',
@@ -73,14 +83,35 @@ class _EditDoctorProfileState extends State<EditDoctorProfile> {
                   ),
                 ],
               ),
-              CircleAvatar(
-                radius: 30.0,
-                backgroundColor: kGreyColorTint35,
-                child: SvgPicture.asset(
-                  'assets/images/nav_about_bima_icon.svg',
-                  height: 40.0,
-                  width: 40.0,
-                ),
+              Stack(
+                children: [
+                  CircleAvatar(
+                      radius: 30.0,
+                      backgroundColor: kGreyColorTint35,
+                      backgroundImage: AssetImage(
+                        profileImagePath ??
+                            'assets/images/ic_policy_card_icon_three.png',
+                      )),
+                  Positioned(
+                    height: 20,
+                    width: 60,
+                    bottom: 0,
+                    child: IconButton(
+                      padding: const EdgeInsets.all(0),
+                      icon: const Icon(Icons.camera_alt_outlined),
+                      onPressed: () async {
+                        image = await _picker.pickImage(
+                            source: ImageSource.gallery);
+                        if (image!.path.isNotEmpty) {
+                          setState(() {
+                            profileImagePath = image!.path;
+                          });
+                        }
+                        debugPrint(image!.path.toString());
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

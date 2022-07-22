@@ -29,9 +29,6 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryColour,
-      /*appBar: AppBar(
-        backgroundColor: kPrimaryColour,
-      ),*/
       body: ListView(
         padding: const EdgeInsets.all(0),
         children: [
@@ -41,8 +38,16 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
               Column(
                 children: [
                   Container(
+                    alignment: Alignment.centerLeft,
                     color: kPrimaryColour,
                     height: size.height * .14,
+                    child: IconButton(
+                        padding: const EdgeInsets.all(0),
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: kAccentColor,
+                        )),
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 20),
@@ -56,9 +61,9 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Name",
-                          style: TextStyle(
+                        Text(
+                          "${fNameController.text} ${lNameController.text}",
+                          style: const TextStyle(
                             color: kPrimaryColorTint80,
                             fontSize: 16.0,
                             fontFamily: 'RobotoCondensed',
@@ -72,6 +77,12 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                               (context),
                               MaterialPageRoute(
                                 builder: (context) => const EditDoctorProfile(),
+                              ),
+                            ).then(
+                              (value) => setState(
+                                () {
+                                  profileImagePath = profileImagePath;
+                                },
                               ),
                             );
                           },
@@ -92,14 +103,12 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                 ],
               ),
               CircleAvatar(
-                radius: 30.0,
-                backgroundColor: kGreyColorTint35,
-                child: SvgPicture.asset(
-                  'assets/images/nav_about_bima_icon.svg',
-                  height: 40.0,
-                  width: 40.0,
-                ),
-              ),
+                  radius: 30.0,
+                  backgroundColor: kGreyColorTint35,
+                  backgroundImage: AssetImage(
+                    profileImagePath ??
+                        'assets/images/ic_policy_card_icon_three.png',
+                  )),
             ],
           ),
           Container(
