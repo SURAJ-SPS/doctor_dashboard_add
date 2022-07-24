@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1028750015693",
+    "project_id": "dpm-app-df16e",
+    "storage_bucket": "dpm-app-df16e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028750015693:android:4ca6272272f50842433d84",
+        "android_client_info": {
+          "package_name": "com.example.dpm_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028750015693-cd6ttdp3ovtql17tv5okat8tr7g3m0hg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dpm_application",
+            "certificate_hash": "74e1babdefafde5ca3b5b95347877c5d3b35d3ae"
+          }
+        },
+        {
+          "client_id": "1028750015693-ok7q0q89rmqvgvidnsebfkq8qrdaofcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6BAEH168NAr7ih1Q7Tutt7yaVX5fJZWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028750015693-ok7q0q89rmqvgvidnsebfkq8qrdaofcu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1028750015693-9e2nals1hpuk25v3ihdjqofougca5vh4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dpmApplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
