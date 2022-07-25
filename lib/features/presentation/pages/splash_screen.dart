@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dpm_application/features/presentation/pages/home_screen.dart';
 import 'package:dpm_application/features/presentation/pages/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomePage(),
+            builder: (context) => HomePage(),
           ),
         );
       }

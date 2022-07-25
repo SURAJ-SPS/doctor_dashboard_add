@@ -35,8 +35,8 @@ class LoginRepository {
           // auth.signInWithCredential();
         },
         verificationFailed: (FirebaseAuthException error) {
-          SnackbarMessages.showErrorSnackbar(context,
-              error: "Error logging in, please try again later");
+          //   SnackbarMessages.showErrorSnackbar(context,
+          //       error: "Error logging in, please try again later");
         },
       );
       return verificationId;
@@ -46,8 +46,10 @@ class LoginRepository {
     }
   }
 
-  Future<UserCredential?> submitOtp(
-      {required String verificationId, required String smsCode}) async {
+  Future<UserCredential?> submitOtp({
+    required String verificationId,
+    required String smsCode,
+  }) async {
     UserCredential? userCredential;
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(

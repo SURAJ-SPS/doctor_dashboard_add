@@ -1,12 +1,23 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dpm_application/core/util/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../conmmon/refrence.dart';
+import '../../../data/model/doctor_contect_model.dart';
 import '../widgets/doctor_info_container.dart';
 import '../widgets/text_field_widget.dart';
+import 'docto_profile_screen.dart';
 
 class EditDoctorProfile extends StatefulWidget {
-  const EditDoctorProfile({Key? key}) : super(key: key);
+  final DoctorProfileScreenState profileScreenState;
+  final DoctorInfoModel doctorInfoModel;
+  const EditDoctorProfile(
+      {Key? key,
+      required this.profileScreenState,
+      required this.doctorInfoModel})
+      : super(key: key);
 
   @override
   State<EditDoctorProfile> createState() => _EditDoctorProfileState();
@@ -15,6 +26,7 @@ class EditDoctorProfile extends StatefulWidget {
 class _EditDoctorProfileState extends State<EditDoctorProfile> {
   final ImagePicker _picker = ImagePicker();
   XFile? image;
+  String? profileImagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +97,45 @@ class _EditDoctorProfileState extends State<EditDoctorProfile> {
               ),
               Stack(
                 children: [
-                  CircleAvatar(
-                      radius: 30.0,
-                      backgroundColor: kGreyColorTint35,
-                      backgroundImage: AssetImage(
-                        profileImagePath ??
-                            'assets/images/ic_policy_card_icon_three.png',
-                      )),
+                  profileImagePath == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              height: 50.0,
+                              width: 50.0,
+                              imageUrl:
+                                  widget.doctorInfoModel.profilePic.toString(),
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
+                                      colorFilter: const ColorFilter.mode(
+                                          Colors.red, BlendMode.colorBurn)),
+                                ),
+                              ),
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
+                          ),
+                        )
+                      : ClipOval(
+                          child: Image.file(
+                          height: 60,
+                          width: 60,
+                          File(profileImagePath!),
+                        )),
+
+                  /* CircleAvatar(
+                          radius: 30.0,
+                          backgroundColor: kGreyColorTint35,
+                          backgroundImage: AssetImage(
+                            profileImagePath!,
+                          )),*/
                   Positioned(
                     height: 20,
                     width: 60,
@@ -100,14 +144,21 @@ class _EditDoctorProfileState extends State<EditDoctorProfile> {
                       padding: const EdgeInsets.all(0),
                       icon: const Icon(Icons.camera_alt_outlined),
                       onPressed: () async {
-                        image = await _picker.pickImage(
-                            source: ImageSource.gallery);
-                        if (image!.path.isNotEmpty) {
-                          setState(() {
-                            profileImagePath = image!.path;
-                          });
+                        try {
+                          image = await _picker.pickImage(
+                              source: ImageSource.gallery);
+                          if (image!.path.isNotEmpty) {
+                            setState(() {
+                              profileImagePath = image!.path;
+                            });
+                            widget.profileScreenState.setState(() {
+                              widget.profileScreenState.profileImagePath =
+                                  image!.path;
+                            });
+                          }
+                        } catch (e) {
+                          debugPrint(e.toString());
                         }
-                        debugPrint(image!.path.toString());
                       },
                     ),
                   ),
@@ -153,7 +204,7 @@ class _EditDoctorProfileState extends State<EditDoctorProfile> {
                   hintText: "Gender",
                 ),
                 TextFieldWidget(
-                  enabled: true,
+                  enabled: false,
                   controller: contNumController,
                   label: "CONTACT NUMBER",
                   hintText: "Number",

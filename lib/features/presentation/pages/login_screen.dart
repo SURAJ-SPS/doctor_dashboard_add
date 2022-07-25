@@ -35,7 +35,9 @@ class LoginScreenState extends State<LoginScreen> {
   Future<void> submit() async {
     final phoneNumber = countryCode + phoneNumberController.text;
     debugPrint('OTP is $phoneNumber');
-    if (phoneNumber.length > 10) {
+    String phoneReg = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+
+    if (RegExp(phoneReg).hasMatch(phoneNumber) && phoneNumber.length > 10) {
       setState(() {
         loginLoader = true;
       });
@@ -44,10 +46,6 @@ class LoginScreenState extends State<LoginScreen> {
           phoneNumber: phoneNumber,
           context: context,
           loginScreenState: loginScreenState);
-
-      setState(() {
-        loginLoader = false;
-      });
     } else {
       const snackBar =
           SnackBar(content: Text('Invalid Phone Number. Please check again.'));
@@ -141,7 +139,10 @@ class LoginScreenState extends State<LoginScreen> {
                           Expanded(
                             flex: 6,
                             child: TextField(
+                              maxLength: 10,
+                              keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
+                                counterText: "",
                                 hintStyle: kLoginTextFieldStyle,
                                 contentPadding: EdgeInsets.all(0.0),
                                 isDense: true,

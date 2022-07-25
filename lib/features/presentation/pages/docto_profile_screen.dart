@@ -1,29 +1,38 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dpm_application/conmmon/refrence.dart';
 import 'package:flutter/material.dart';
 import '../../../core/util/color_constants.dart';
+import '../../../data/model/doctor_contect_model.dart';
 import '../widgets/doctor_info_container.dart';
 import '../widgets/text_field_widget.dart';
 import 'edit_doctor_profile.dart';
 
 class DoctorProfileScreen extends StatefulWidget {
-  const DoctorProfileScreen({Key? key}) : super(key: key);
+  final DoctorInfoModel doctorInfoModel;
+  const DoctorProfileScreen({Key? key, required this.doctorInfoModel})
+      : super(key: key);
 
   @override
-  State<DoctorProfileScreen> createState() => _DoctorProfileScreenState();
+  State<DoctorProfileScreen> createState() => DoctorProfileScreenState();
 }
 
-class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
+class DoctorProfileScreenState extends State<DoctorProfileScreen> {
+  String? profileImagePath;
+  late DoctorProfileScreenState profileScreenState;
   @override
   void initState() {
-    fNameController.text = "Suraj";
-    lNameController.text = "Singh";
+    fNameController.text = widget.doctorInfoModel.firstName!;
+    lNameController.text = widget.doctorInfoModel.lastName!;
     genderController.text = "Mail";
-    contNumController.text = "+919717065425";
+    contNumController.text = widget.doctorInfoModel.primaryContactNo!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    profileScreenState = this;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryColour,
@@ -74,13 +83,10 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                             Navigator.push(
                               (context),
                               MaterialPageRoute(
-                                builder: (context) => const EditDoctorProfile(),
-                              ),
-                            ).then(
-                              (value) => setState(
-                                () {
-                                  profileImagePath = profileImagePath;
-                                },
+                                builder: (context) => EditDoctorProfile(
+                                  doctorInfoModel: widget.doctorInfoModel,
+                                  profileScreenState: profileScreenState,
+                                ),
                               ),
                             );
                           },
@@ -100,13 +106,48 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                   ),
                 ],
               ),
-              CircleAvatar(
-                  radius: 30.0,
-                  backgroundColor: kGreyColorTint35,
-                  backgroundImage: AssetImage(
-                    profileImagePath ??
-                        'assets/images/ic_policy_card_icon_three.png',
-                  )),
+              profileImagePath == null
+                  ? CircleAvatar(
+                      radius: 30.0,
+                      child: ClipOval(
+                        child: CachedNetworkImage(
+                          height: 50.0,
+                          width: 50.0,
+                          imageUrl:
+                              widget.doctorInfoModel.profilePic.toString(),
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                  colorFilter: const ColorFilter.mode(
+                                      Colors.red, BlendMode.colorBurn)),
+                            ),
+                          ),
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
+                    )
+                  : ClipOval(
+                      child: Image.file(
+                        height: 60,
+                        width: 60,
+                        File(profileImagePath!),
+                      ),
+                    ),
+
+              /*CircleAvatar(
+                      radius: 30.0,
+                      backgroundColor: kGreyColorTint35,
+                      backgroundImage: ClipOval(child: Image.file(File(imageFilePath))),
+
+                      */ /*backgroundImage: AssetImage(
+                        profileImagePath!,
+                      ),*/ /*
+                    ),*/
             ],
           ),
           Container(

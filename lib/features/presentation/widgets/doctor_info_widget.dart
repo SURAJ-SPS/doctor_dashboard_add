@@ -1,30 +1,47 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/util/button_constants.dart';
 import '../../../core/util/color_constants.dart';
+import '../../../data/model/doctor_contect_model.dart';
 import '../pages/docto_profile_screen.dart';
 
 class DoctorInFoWidget extends StatelessWidget {
-  const DoctorInFoWidget({Key? key}) : super(key: key);
+  final DoctorInfoModel doctorInfoModel;
+  const DoctorInFoWidget({Key? key, required this.doctorInfoModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Card(
       child: ListTile(
         contentPadding:
             const EdgeInsets.only(top: 10, left: 10, right: 20, bottom: 10),
         leading: CircleAvatar(
           radius: 30.0,
-          backgroundColor: kGreyColorTint35,
-          child: SvgPicture.asset(
-            'assets/images/nav_about_bima_icon.svg',
-            height: 40.0,
-            width: 40.0,
+          child: ClipOval(
+            child: CachedNetworkImage(
+              height: 50.0,
+              width: 50.0,
+              imageUrl: doctorInfoModel.profilePic.toString(),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                      colorFilter: const ColorFilter.mode(
+                          Colors.red, BlendMode.colorBurn)),
+                ),
+              ),
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
         ),
-        title: const Text(
-          'Mehreen Azasma',
-          style: TextStyle(
+        title: Text(
+          "${doctorInfoModel.firstName} ${doctorInfoModel.lastName}",
+          style: const TextStyle(
             color: kPrimaryColorTint100,
             fontSize: 16.0,
             fontFamily: 'RobotoCondensed',
@@ -34,37 +51,41 @@ class DoctorInFoWidget extends StatelessWidget {
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            SizedBox(
+          children: [
+            const SizedBox(
               height: 5,
             ),
             Text(
-              'Specialization',
-              style: TextStyle(
+              "${doctorInfoModel.specialization}",
+              style: const TextStyle(
                 color: kPrimaryColorTint110,
                 fontSize: 14.0,
                 fontFamily: 'RobotoCondensed',
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 2,
             ),
             Text(
-              'Description ,hjwcbdjhcbewjchbjhbbewjhebbjwhbjhbewcwbcjhbcwjwbjhwbcjhbwjhbwhjbjwhdbwhedbhwcbhcbw',
+              "${doctorInfoModel.specialization}",
               style: kSubtitleCondensedText,
             ),
           ],
         ),
         trailing: const Padding(
           padding: EdgeInsets.only(top: 20),
-          child: Icon(Icons.arrow_forward_ios),
+          child: Icon(
+            Icons.arrow_forward_ios,
+            color: kPrimaryColour,
+          ),
         ),
         onTap: () {
           Navigator.push(
             (context),
             MaterialPageRoute(
-              builder: (context) => const DoctorProfileScreen(),
+              builder: (context) =>
+                  DoctorProfileScreen(doctorInfoModel: doctorInfoModel),
             ),
           );
         },
